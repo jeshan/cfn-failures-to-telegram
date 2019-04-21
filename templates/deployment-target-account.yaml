@@ -60,6 +60,7 @@ Resources:
     Properties:
       RoleName: !Sub ${ProjectName}-target
       ManagedPolicyArns:
+        - !Ref AppManagedPolicy
         - !Ref DeployManagedPolicy
         - !Ref TemplateManagedPolicy
       AssumeRolePolicyDocument:
@@ -105,7 +106,7 @@ Resources:
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
-  TemplateManagedPolicy:
+  AppManagedPolicy:
     Properties:
       Description: Policy used in trust relationship with CodeBuild
       Path: /service-role/
@@ -132,6 +133,26 @@ Resources:
             Effect: Allow
             Resource:
               - !Sub arn:aws:sns:*:${AWS::AccountId}:${EventsTopicName}
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+  TemplateManagedPolicy:
+    Properties:
+      Path: /service-role/
+      PolicyDocument:
+        Statement:
+          - Action:
+              - iam:ListPolicyVersions
+              - iam:CreatePolicy
+              - iam:DeletePolicy
+              - iam:GetPolicy
+              - iam:CreatePolicyVersion
+              - iam:DeletePolicyVersion
+              - iam:SetDefaultPolicyVersion
+              - iam:GetPolicyVersion
+            Effect: Allow
+            Resource:
+              - !Sub arn:aws:iam::${AWS::AccountId}:policy/service-role/${ProjectName}-*
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
