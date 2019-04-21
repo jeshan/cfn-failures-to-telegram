@@ -52,6 +52,7 @@ Resources:
               commands:
                 - pip3 install pipenv
                 - pipenv install
+                - pipenv shell
             build:
               commands:
                 - aws s3 sync s3://${PRIVATE_BUCKET}/github.com/${REPO}/master .
