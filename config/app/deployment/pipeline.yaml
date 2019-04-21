@@ -1,6 +1,0 @@
-template_path: deployment-pipeline.yaml
-
-parameters:
-  ProjectName: cfn-failures-to-telegram
-  PrivateBucket: jeshan-oss-private-files
-  PublicBucket: jeshan-oss-public-files
