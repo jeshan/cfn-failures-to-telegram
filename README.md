@@ -22,6 +22,7 @@ aws ssm put-parameter --name bot-token --type SecureString --value $YOUR_TOKEN -
 aws ssm put-parameter --name /cfn-failures-to-telegram/chat-id --type String --value $YOUR_TOKEN --region us-east-1
 ``` 
 
+# Adding private sceptre configuration
 The build process also generates boilerplate configuration with `python generate-config.py`.
 
 You have the ability to provide sceptre with the necessary configuration and credentials that you will want to keep private.
@@ -35,5 +36,5 @@ To generate sceptre configuration for a private environment, you can run somethi
 
 You can place your private sceptre configuration at that location in a private bucket and they will be pulled on build.
 There's a script available to send these files to S3: Edit your private bucket in `upload-private-config.sh` and run it.
-You need to create the role so that your deployment pipeline has permissions to deploy. To do that, for each environment, run `sceptre launch -y $ENV/base`
+You need to create the role so that your deployment pipeline has permissions to deploy. run `python put-target-deployment-roles.py`
 Then, run the pipeline. That's all what's needed for sceptre to work.
