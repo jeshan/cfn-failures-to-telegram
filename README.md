@@ -24,7 +24,7 @@ The build process also generates boilerplate configuration with `python generate
 
 You have the ability to provide sceptre with the necessary configuration and credentials that you will want to keep private.
 Read the buildspec for this, in particular:
-`aws s3 sync s3://jeshan-oss-private-files/github.com/$REPO/master .`
+`aws s3 sync s3://${PRIVATE_BUCKET}/github.com/$REPO/master .`
 
 To generate sceptre configuration for a private environment, you can run something like:
 `python generate-config.py production`
