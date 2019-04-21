@@ -115,7 +115,10 @@ Resources:
               - lambda:CreateFunction
               - lambda:DeleteFunction
               - lambda:UpdateFunctionCode
+              - lambda:GetFunctionConfiguration
               - lambda:UpdateFunctionConfiguration
+              - lambda:AddPermission
+              - lambda:RemovePermission
             Effect: Allow
             Resource: !Sub 'arn:aws:lambda:*:${AWS::AccountId}:function:${ProjectName}-*'
           - Action:
