@@ -6,6 +6,8 @@ Deploy this in all regions in one step with:
 
 `sceptre launch -y main`
 
+If needed, you can create a virtual env with `pipenv install`
+
 This includes a deployment pipeline on AWS. Or deploy the pipeline manually with this button: 
 
 <a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=cfn-failures-to-telegram-deployment-pipeline&templateURL=https://s3.amazonaws.com/jeshan-oss-public-files/cfn-failures-to-telegram-deployment-pipeline-template.yaml">
