@@ -76,7 +76,7 @@ Resources:
       ManagedPolicyArns:
         - !Ref LogManagedPolicy
         - !Ref DeployManagedPolicy
-        #- !Ref TemplateManagedPolicy
+        - !Ref TemplateManagedPolicy
       Path: /service-role/
       RoleName: !Sub ${ProjectName}-deployer
     Type: AWS::IAM::Role
@@ -147,9 +147,23 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
-              - iam:PassRole
+              - ssm:GetParameter
             Effect: Allow
-            Resource: !Sub 'arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*'
+            Resource:
+              - !Sub arn:aws:ssm:us-east-1:${AWS::AccountId}:parameter/bot-token
+              - !Sub arn:aws:ssm:us-east-1:${AWS::AccountId}:parameter/${ProjectName}/*
+          - Action:
+              - iam:ListPolicyVersions
+              - iam:CreatePolicy
+              - iam:DeletePolicy
+              - iam:GetPolicy
+              - iam:CreatePolicyVersion
+              - iam:DeletePolicyVersion
+              - iam:SetDefaultPolicyVersion
+              - iam:GetPolicyVersion
+            Effect: Allow
+            Resource:
+              - !Sub arn:aws:iam::${AWS::AccountId}:policy/service-role/${ProjectName}-*
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
