@@ -58,7 +58,7 @@ events_topic_name: cloudformation-stack-events
         f.write(f"""template_path: deployment-pipeline.yaml
 
 parameters:
-  ProjectName: {{{{stack_group_config.project_code}}}}
+  ProjectName: {project_name}
   PrivateBucket: {private_bucket}
   PublicBucket: {public_bucket}
 """)
@@ -70,7 +70,7 @@ parameters:
   DeploymentAccount: !environment_variable ACCOUNT_ID
   DlqName: {{{{stack_group_config.dlq_name}}}}
   EventsTopicName: {{{{stack_group_config.events_topic_name}}}}
-  ProjectName: {{{{stack_group_config.project_code}}}}
+  ProjectName: {project_name}
 """)
     for region in regions:
         with open(f'config/main/{env}/{region}.yaml', 'w') as f:
