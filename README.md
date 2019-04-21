@@ -19,7 +19,7 @@ You will need a telegram bot token and a telegram group (chat) id. Define them i
 
 ```bash
 aws ssm put-parameter --name bot-token --type SecureString --value $YOUR_TOKEN --region us-east-1 
-aws ssm put-parameter --name /cfn-failures-to-telegram/chat-id --value $YOUR_TOKEN --region us-east-1
+aws ssm put-parameter --name /cfn-failures-to-telegram/chat-id --type String --value $YOUR_TOKEN --region us-east-1
 ``` 
 
 The build process also generates boilerplate configuration with `python generate-config.py`.
