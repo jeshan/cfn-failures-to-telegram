@@ -58,7 +58,7 @@ Resources:
                 - python generate-config.py
                 - python configure-aws-cli.py ${REPO}
                 - sceptre --no-colour launch -y main
-                - ./upload-public-templates.sh
+                - chmod +x upload-public-templates.sh && ./upload-public-templates.sh
       TimeoutInMinutes: 15
       Triggers:
         Webhook: true
