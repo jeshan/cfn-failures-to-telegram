@@ -55,7 +55,7 @@ Resources:
             Resource: !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${DlqName}
         Version: '2012-10-17'
 
-  CodebuildRole:
+  DeployerRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !Sub ${ProjectName}-target
@@ -137,6 +137,6 @@ Resources:
 
 Outputs:
   TargetRole:
-    Value: !Sub '${CodebuildRole.Arn}'
+    Value: !Sub '${DeployerRole.Arn}'
   FnRole:
     Value: !Sub '${FnRole.Arn}'
