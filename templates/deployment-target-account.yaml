@@ -123,6 +123,7 @@ Resources:
             Resource: !Sub 'arn:aws:lambda:*:${AWS::AccountId}:function:${ProjectName}-*'
           - Action:
               - iam:PassRole
+              - iam:GetRole
             Effect: Allow
             Resource: !Sub 'arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*'
         Version: '2012-10-17'
