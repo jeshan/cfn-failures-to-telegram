@@ -28,7 +28,7 @@ def _configure_profile(profile_name, profile_role):
 
 
 def go(repo):
-    for path in glob('config/main/*/config.yaml'):
+    for path in glob('config/app/*/config.yaml'):
         parsed = yaml.load(open(path))
         profile_name = parsed['profile']
         account_id = parsed.get('account_id', ACCOUNT_ID)

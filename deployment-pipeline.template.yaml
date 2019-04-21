@@ -57,7 +57,7 @@ Resources:
                 - aws s3 sync s3://${PRIVATE_BUCKET}/github.com/${REPO}/master .
                 - python generate-config.py
                 - python configure-aws-cli.py ${REPO}
-                - sceptre --no-colour launch -y main
+                - sceptre --no-colour launch -y app
                 - chmod +x upload-public-templates.sh && ./upload-public-templates.sh</%text>
       TimeoutInMinutes: 15
       Triggers:

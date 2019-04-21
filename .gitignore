@@ -1,7 +1,7 @@
 config/
 .idea
 *.iml
-!/config/main/deployment/
+!/config/app/deployment/
 configure-aws-cli.py
 upload-private-config.sh
 upload-public-templates.sh

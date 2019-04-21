@@ -4,7 +4,7 @@ Instantly notifies you of cloudformation failures (i.e create failed, rollbacks,
 
 Deploy this in all regions in one step with:
 
-`sceptre launch -y main`
+`sceptre launch -y app`
 
 If needed, you can create a virtual env with `pipenv install`
 

@@ -12,10 +12,10 @@ def run(command):
 
 
 def go():
-    for path in glob('config/main/*/config.yaml'):
+    for path in glob('config/app/*/config.yaml'):
         env = path[:path.rindex('/')]
         env = env[env.rindex('/') + 1:]
-        output = run(f'sceptre --no-colour launch -y main/{env}/base')
+        output = run(f'sceptre --no-colour launch -y app/{env}/base')
         print(output)
 
 

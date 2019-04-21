@@ -33,16 +33,16 @@ def go(env):
     save_template_file('upload-public-templates.sh',
                        {'PROJECT_NAME': project_name, 'PRIVATE_BUCKET': private_bucket, 'PUBLIC_BUCKET': public_bucket})
     save_template_file('deployment-pipeline.yaml', {'PROJECT_NAME': project_name}, 'templates/')
-    _mkdir('config/main/deployment')
-    # save_template_file('config/main/deployment/pipeline.yaml',
+    _mkdir('config/app/deployment')
+    # save_template_file('config/app/deployment/pipeline.yaml',
     #                  {'PUBLIC_BUCKET': public_bucket, 'PRIVATE_BUCKET': private_bucket})
 
     _mkdir('config')
-    _mkdir('config/main/')
-    _mkdir('config/main/deployment')
-    _mkdir(f'config/main/{env}')
-    if not exists(f'config/main/{env}/config.yaml'):
-        with open(f'config/main/{env}/config.yaml', 'w') as f:
+    _mkdir('config/app/')
+    _mkdir('config/app/deployment')
+    _mkdir(f'config/app/{env}')
+    if not exists(f'config/app/{env}/config.yaml'):
+        with open(f'config/app/{env}/config.yaml', 'w') as f:
             f.write(f"""profile: {env}
 """)
 
@@ -54,7 +54,7 @@ dlq_name: lambda-default-dlq
 events_topic_name: cloudformation-stack-events
 """)
 
-    with open('config/main/deployment/pipeline.yaml', 'w') as f:
+    with open('config/app/deployment/pipeline.yaml', 'w') as f:
         f.write(f"""template_path: deployment-pipeline.yaml
 
 parameters:
@@ -63,7 +63,7 @@ parameters:
   PublicBucket: {public_bucket}
 """)
 
-    with open(f'config/main/{env}/base.yaml', 'w') as f:
+    with open(f'config/app/{env}/base.yaml', 'w') as f:
         f.write(f"""template_path: deployment-target-account.yaml
 
 parameters:
@@ -73,14 +73,14 @@ parameters:
   ProjectName: {project_name}
 """)
     for region in regions:
-        with open(f'config/main/{env}/{region}.yaml', 'w') as f:
+        with open(f'config/app/{env}/{region}.yaml', 'w') as f:
             f.write(f"""template_path: template.yaml
 
 region: {region}
 
 parameters:
   DlqName: {{{{stack_group_config.dlq_name}}}}
-  Role: !stack_output main/{env}/base.yaml::FnRole
+  Role: !stack_output app/{env}/base.yaml::FnRole
   TelegramBotToken: !aws ssm::get_parameter::'Name':'bot-token','WithDecryption':True::Parameter.Value::us-east-1
   TelegramChatId: !aws ssm::get_parameter::'Name':'/cfn-failures-to-telegram/chat-id'::Parameter.Value::us-east-1
   TopicName: cloudformation-stack-events
