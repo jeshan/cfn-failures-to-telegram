@@ -48,7 +48,7 @@ Resources:
           - Effect: Allow
             Action:
               - sns:Publish
-            Resource: !Sub arn:aws:sns:*:${AWS::AccountId}:${EventsTopicName} # TODO: confirm * region
+            Resource: !Sub arn:aws:sns:*:${AWS::AccountId}:${EventsTopicName}
           - Effect: Allow
             Action:
               - sns:Publish
