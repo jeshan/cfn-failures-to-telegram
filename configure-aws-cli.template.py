@@ -1,5 +1,4 @@
 import os
-import sys
 from glob import glob
 from subprocess import check_output, CalledProcessError
 
@@ -27,7 +26,7 @@ def _configure_profile(profile_name, profile_role):
         run(f'aws configure set {profile_name}.role_arn {profile_role}')
 
 
-def go(repo):
+def go():
     for path in glob('config/app/*/config.yaml'):
         parsed = yaml.load(open(path))
         profile_name = parsed['profile']
@@ -37,4 +36,4 @@ def go(repo):
 
 
 if __name__ == '__main__':
-    go(sys.argv[1])
+    go()
