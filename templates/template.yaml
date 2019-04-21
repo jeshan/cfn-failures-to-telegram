@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'cfn-failures-to-telegram'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  DlqName:
+    Type: String
+  Role:
+    Type: String
+  TelegramBotToken:
+    Type: String
+    NoEcho: true
+  TelegramChatId:
+    Type: String
+    NoEcho: true
+  TopicName:
+    Type: String
+
+Resources:
+  Fn:
+    Type: AWS::Serverless::Function
+    Properties:
+      InlineCode: !Sub |
+        from botocore.vendored import requests
+        import re
+        from urllib.parse import quote_plus
+
+        fail_statuses = ["'ROLLBACK_IN_PROGRESS'", "'ROLLBACK_FAILED'", "'DELETE_FAILED'", "'UPDATE_ROLLBACK_IN_PROGRESS'", "'UPDATE_ROLLBACK_FAILED'"]
+
+        def handler(event, context):
+          print('event', event)
+          for record in event.get('Records', []):
+            message = record['Sns']['Message']
+            #print('message', message)
+            is_failed = False
+            for line in message.split('\n'):
+              if '=' not in line:
+                continue
+              try:
+                key, value = line.split('=')
+              except:
+                # print('ignoring line', line)
+                continue
+              if key == 'StackId':
+                stack_id = value[1:-1]
+              if key == 'ResourceStatus' and value in fail_statuses:
+                is_failed = True
+            if is_failed:
+              #print('error_message', message)
+              region = re.search('cloudformation:(.+?):', stack_id).group(1)
+              message += f'\nLink to stack: https://console.aws.amazon.com/cloudformation/home?region={region}#/stacks/{quote_plus(stack_id)}/events'
+              requests.post('https://api.telegram.org/bot${TelegramBotToken}/sendMessage', json={'chat_id': ${TelegramChatId}, 'text': message})
+      Handler: index.handler
+      Timeout: 30
+      MemorySize: 128
+      Role: !Ref Role
+      Runtime: python3.6
+      Events:
+        Sns:
+          Type: SNS
+          Properties:
+            Topic: !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${TopicName}

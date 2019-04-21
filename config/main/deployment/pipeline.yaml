@@ -1,0 +1,6 @@
+template_path: deployment-pipeline.yaml
+
+parameters:
+  ProjectName: {{stack_group_config.project_code}}
+  PrivateBucket: jeshan-oss-private-files
+  PublicBucket: jeshan-oss-public-files
