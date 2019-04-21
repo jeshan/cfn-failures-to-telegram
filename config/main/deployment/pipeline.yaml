@@ -1,6 +1,6 @@
 template_path: deployment-pipeline.yaml
 
 parameters:
-  ProjectName: {{stack_group_config.project_code}}
+  ProjectName: cfn-failures-to-telegram
   PrivateBucket: jeshan-oss-private-files
   PublicBucket: jeshan-oss-public-files
