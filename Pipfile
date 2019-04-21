@@ -9,5 +9,6 @@ python_version = "3.7"
 [packages]
 mako = "*"
 pyyaml = "*"
+sceptre-aws-resolver = "*"
 
 [dev-packages]
