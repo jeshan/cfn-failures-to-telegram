@@ -61,7 +61,6 @@ Resources:
       RoleName: !Sub ${ProjectName}-target
       ManagedPolicyArns:
         - !Ref DeployManagedPolicy
-        #- !Ref TemplateManagedPolicy
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -102,19 +101,6 @@ Resources:
               - cloudformation:ListChangeSets
             Effect: Allow
             Resource: '*'
-        Version: '2012-10-17'
-    Type: AWS::IAM::ManagedPolicy
-
-  TemplateManagedPolicy:
-    Properties:
-      Description: Policy used in trust relationship with CodeBuild
-      Path: /service-role/
-      PolicyDocument:
-        Statement:
-          - Action:
-              - iam:PassRole
-            Effect: Allow
-            Resource: !Sub 'arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
