@@ -1,6 +1,6 @@
 # cfn-failures-to-telegram
 
-Instantly notifies you of cloudformation failures (i.e create failed, rollbacks, etc) in a Telegram group.
+Instantly notifies you of cloudformation failures (i.e create failed, rollbacks, etc) in a Telegram group. (prereq: deploy [this template first](https://github.com/jeshan/cfn-stack-notifications) to ensure your stacks are sending their events to SNS)
 
 Deploy this in all regions in one step with:
 
