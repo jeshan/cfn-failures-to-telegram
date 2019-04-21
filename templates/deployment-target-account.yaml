@@ -118,6 +118,10 @@ Resources:
               - lambda:UpdateFunctionConfiguration
             Effect: Allow
             Resource: !Sub 'arn:aws:lambda:*:${AWS::AccountId}:function:${ProjectName}-*'
+          - Action:
+              - iam:PassRole
+            Effect: Allow
+            Resource: !Sub 'arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
