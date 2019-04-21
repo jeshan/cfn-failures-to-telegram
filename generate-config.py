@@ -24,7 +24,7 @@ def save_template_file(path, data, directory=None):
 
 
 def go(env):
-    project_name = os.environ['PROJECT_NAME']
+    project_name = os.environ.get('PROJECT_NAME', 'cfn-failures-to-telegram')
     public_bucket = os.environ.get('PUBLIC_BUCKET', 'jeshan-oss-public-files')
     private_bucket = os.environ.get('PRIVATE_BUCKET', 'jeshan-oss-private-files')
 
