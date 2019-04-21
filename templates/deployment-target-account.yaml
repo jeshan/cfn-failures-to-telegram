@@ -73,7 +73,6 @@ Resources:
 
   DeployManagedPolicy:
     Properties:
-      Description: Policy used in trust relationship with CodeBuild
       Path: /service-role/
       PolicyDocument:
         Statement:
@@ -108,7 +107,6 @@ Resources:
 
   AppManagedPolicy:
     Properties:
-      Description: Policy used in trust relationship with CodeBuild
       Path: /service-role/
       PolicyDocument:
         Statement:
