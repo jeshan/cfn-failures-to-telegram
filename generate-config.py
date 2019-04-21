@@ -34,8 +34,8 @@ def go(env):
                        {'PROJECT_NAME': project_name, 'PRIVATE_BUCKET': private_bucket, 'PUBLIC_BUCKET': public_bucket})
     save_template_file('deployment-pipeline.yaml', {'PROJECT_NAME': project_name}, 'templates/')
     _mkdir('config/app/deployment')
-    save_template_file('pipeline.yaml', {'PUBLIC_BUCKET': public_bucket, 'PRIVATE_BUCKET': private_bucket},
-                       'config/app/deployment/')
+    # save_template_file('config/app/deployment/pipeline.yaml',
+    #                  {'PUBLIC_BUCKET': public_bucket, 'PRIVATE_BUCKET': private_bucket})
 
     _mkdir('config')
     _mkdir('config/app/')
