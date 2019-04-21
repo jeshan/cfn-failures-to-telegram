@@ -126,6 +126,12 @@ Resources:
               - iam:GetRole
             Effect: Allow
             Resource: !Sub 'arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*'
+          - Action:
+              - sns:Subscribe
+              - sns:Unsubscribe
+            Effect: Allow
+            Resource:
+              - !Sub arn:aws:sns:*:${AWS::AccountId}:${EventsTopicName}
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
