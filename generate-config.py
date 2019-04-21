@@ -1,6 +1,7 @@
 import os
 import sys
 from os import mkdir
+from os.path import exists
 
 from mako.template import Template
 
@@ -40,8 +41,9 @@ def go(env):
     _mkdir('config/main/')
     _mkdir('config/main/deployment')
     _mkdir(f'config/main/{env}')
-    with open(f'config/main/{env}/config.yaml', 'w') as f:
-        f.write(f"""profile: {env}
+    if not exists(f'config/main/{env}/config.yaml'):
+        with open(f'config/main/{env}/config.yaml', 'w') as f:
+            f.write(f"""profile: {env}
 """)
 
     with open('config/config.yaml', 'w') as f:
