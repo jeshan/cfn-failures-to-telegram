@@ -2,10 +2,6 @@
 
 Instantly notifies you of cloudformation failures (i.e create failed, rollbacks, etc) in a Telegram group. (prereq: deploy [this template first](https://github.com/jeshan/cfn-stack-notifications) to ensure your stacks are sending their events to SNS)
 
-Deploy this in all regions in one step with:
-
-`sceptre launch -y app`
-
 If needed, you can create a virtual env with `pipenv install`
 
 This includes a deployment pipeline on AWS. Or deploy the pipeline manually with this button: 
@@ -19,7 +15,8 @@ You will need a telegram bot token and a telegram group (chat) id. Define them i
 
 ```bash
 aws ssm put-parameter --name bot-token --type SecureString --value $YOUR_TOKEN --region us-east-1 
-aws ssm put-parameter --name /cfn-failures-to-telegram/chat-id --type String --value $YOUR_TOKEN --region us-east-1
+aws ssm put-parameter --name /cfn-failures-to-telegram/chat-id --type String --value $YOUR_CHAT_ID --region us-east-1
+sceptre launch -y app
 ``` 
 
 # Adding private sceptre configuration
