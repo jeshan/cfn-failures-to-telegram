@@ -132,6 +132,14 @@ Resources:
             Effect: Allow
             Resource: '*'
           - Action:
+              - s3:ListBucket
+            Effect: Allow
+            Resource: !Sub arn:aws:s3:::${PrivateBucket}
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Sub arn:aws:s3:::${PrivateBucket}/*
+          - Action:
               - s3:PutObject
             Effect: Allow
             Resource: !Sub arn:aws:s3:::${PublicBucket}/*

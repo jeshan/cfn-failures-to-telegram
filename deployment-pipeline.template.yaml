@@ -132,9 +132,17 @@ Resources:
             Effect: Allow
             Resource: '*'
           - Action:
+              - s3:ListBucket
+            Effect: Allow
+            Resource: <%text>!Sub arn:aws:s3:::${PrivateBucket}
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Sub arn:aws:s3:::${PrivateBucket}/*
+          - Action:
               - s3:PutObject
             Effect: Allow
-            Resource: <%text>!Sub arn:aws:s3:::${PublicBucket}/*
+            Resource: !Sub arn:aws:s3:::${PublicBucket}/*
           - Action:
               - codebuild:UpdateProject
               - codebuild:DeleteProject
