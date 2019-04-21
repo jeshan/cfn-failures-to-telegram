@@ -34,6 +34,8 @@ Resources:
             Value: !Ref Repo
           - Name: ACCOUNT_ID
             Value: !Ref AWS::AccountId
+          - Name: PROJECT_NAME
+            Value: !Ref ProjectName
       Name: !Sub deploy-${ProjectName}</%text>
       ServiceRole: !GetAtt 'CodeBuildServiceRole.Arn'
       Source:
@@ -48,13 +50,13 @@ Resources:
           phases:
             pre_build:
               commands:
-                - pip3 install sceptre #sceptre-aws-resolver
+                - pip3 install sceptre sceptre-aws-resolver mako
             build:
               commands:
                 - aws s3 sync s3://${PRIVATE_BUCKET}/github.com/${REPO}/master .
                 - python generate-config.py
-                - python configure-aws-cli.py ${REPO}</%text>
-                - sceptre launch -y main
+                - python configure-aws-cli.py ${REPO}
+                - sceptre --no-colour launch -y main
                 - ./upload-public-templates.sh
       TimeoutInMinutes: 15
       Triggers:
