@@ -5,8 +5,6 @@ from subprocess import check_output, CalledProcessError
 
 import yaml
 
-account_id = os.environ['ACCOUNT_ID']
-
 
 def run(command):
     print('Running', command)
@@ -30,6 +28,7 @@ def go(repo):
     for path in glob('config/main/*/config.yaml'):
         parsed = yaml.load(open(path))
         profile_name = parsed['profile']
+        account_id = parsed.get('account_id', os.environ['ACCOUNT_ID'])
         _configure_profile(profile_name, f'arn:aws:iam::{account_id}:role/${PROJECT_NAME}-target')
     _configure_profile(repo, 'default')
 
