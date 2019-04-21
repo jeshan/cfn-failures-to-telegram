@@ -147,7 +147,11 @@ Resources:
               - codebuild:UpdateProject
               - codebuild:DeleteProject
             Effect: Allow
-            Resource: !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/deploy-${ProjectName}</%text>
+            Resource: !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/deploy-${ProjectName}
+          - Effect: Allow
+            Action:
+              - iam:GetRole
+            Resource: !Sub arn:aws:iam::${AWS::AccountId}:role/*</%text>
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
