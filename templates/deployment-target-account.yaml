@@ -117,7 +117,7 @@ Resources:
               - lambda:UpdateFunctionCode
               - lambda:UpdateFunctionConfiguration
             Effect: Allow
-            Resource: !Sub 'arn:aws:lambda:*:${AWS::AccountId}:function/${ProjectName}-*'
+            Resource: !Sub 'arn:aws:lambda:*:${AWS::AccountId}:function:${ProjectName}-*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
