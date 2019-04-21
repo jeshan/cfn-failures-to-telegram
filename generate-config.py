@@ -1,0 +1,90 @@
+import os
+import sys
+from os import mkdir
+
+from mako.template import Template
+
+regions = 'us-east-1,us-east-2,eu-west-1,us-west-1,us-west-2,ap-south-1,ap-southeast-1,ap-southeast-2,ca-central-1,eu-central-1,eu-north-1,eu-west-2,eu-west-3,sa-east-1,ap-northeast-1,ap-northeast-2'.split(
+    ',')
+
+
+def _mkdir(path):
+    try:
+        mkdir(path)
+    except:
+        pass
+
+
+def save_template_file(path, data, directory=None):
+    basename = path[(path.rindex('/') + 1) if '/' in path else 0:]
+    with open(path if not directory else f'{directory}/{basename}', 'w') as f:
+        src = path[:path.rindex('.') + 1] + 'template.' + path[path.rindex('.') + 1:]
+        f.write(Template(filename=src).render(**data))
+
+
+def go(env):
+    project_name = os.environ['PROJECT_NAME']
+    public_bucket = os.environ.get('PUBLIC_BUCKET', 'jeshan-oss-public-files')
+    private_bucket = os.environ.get('PRIVATE_BUCKET', 'jeshan-oss-private-files')
+
+    save_template_file('configure-aws-cli.py', {'PROJECT_NAME': project_name})
+    save_template_file('upload-private-config.sh', {'PROJECT_NAME': project_name, 'PRIVATE_BUCKET': private_bucket})
+    save_template_file('upload-public-templates.sh',
+                       {'PROJECT_NAME': project_name, 'PRIVATE_BUCKET': private_bucket, 'PUBLIC_BUCKET': public_bucket})
+    save_template_file('deployment-pipeline.yaml', {'PROJECT_NAME': project_name}, 'templates/')
+    _mkdir('config/main/deployment')
+    # save_template_file('config/main/deployment/pipeline.yaml',
+    #                  {'PUBLIC_BUCKET': public_bucket, 'PRIVATE_BUCKET': private_bucket})
+
+    _mkdir('config')
+    _mkdir('config/main/')
+    _mkdir('config/main/deployment')
+    _mkdir(f'config/main/{env}')
+    with open(f'config/main/{env}/config.yaml', 'w') as f:
+        f.write(f"""profile: {env}
+""")
+
+    with open('config/config.yaml', 'w') as f:
+        f.write(f"""project_code: {project_name}
+region: us-east-1
+
+dlq_name: lambda-default-dlq
+events_topic_name: cloudformation-stack-events
+""")
+
+    with open('config/main/deployment/pipeline.yaml', 'w') as f:
+        f.write(f"""template_path: deployment-pipeline.yaml
+
+parameters:
+  ProjectName: {{{{stack_group_config.project_code}}}}
+  PrivateBucket: {private_bucket}
+  PublicBucket: {public_bucket}
+""")
+
+    with open(f'config/main/{env}/base.yaml', 'w') as f:
+        f.write(f"""template_path: deployment-target-account.yaml
+
+parameters:
+  DeploymentAccount: !environment_variable ACCOUNT_ID
+  DlqName: {{{{stack_group_config.dlq_name}}}}
+  EventsTopicName: {{{{stack_group_config.events_topic_name}}}}
+  ProjectName: {{{{stack_group_config.project_code}}}}
+""")
+    for region in regions:
+        with open(f'config/main/{env}/{region}.yaml', 'w') as f:
+            f.write(f"""template_path: template.yaml
+
+region: {region}
+
+parameters:
+  DlqName: {{{{stack_group_config.dlq_name}}}}
+  Role: !stack_output main/{env}/base.yaml::FnRole
+  TelegramBotToken: !aws ssm::get_parameter::'Name':'bot-token','WithDecryption':True::Parameter.Value::us-east-1
+  TelegramChatId: !aws ssm::get_parameter::'Name':'/cfn-failures-to-telegram/chat-id'::Parameter.Value::us-east-1
+  TopicName: cloudformation-stack-events
+""")
+
+
+if __name__ == '__main__':
+    env_name = sys.argv[1] if len(sys.argv) > 1 else 'dev'
+    go(env_name)
