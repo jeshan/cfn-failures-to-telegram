@@ -79,7 +79,6 @@ parameters:
 region: {region}
 
 parameters:
-  DlqName: {{{{stack_group_config.dlq_name}}}}
   Role: !stack_output app/{env}/base.yaml::FnRole
   TelegramBotToken: !aws ssm::get_parameter::'Name':'bot-token','WithDecryption':True::Parameter.Value::us-east-1
   TelegramChatId: !aws ssm::get_parameter::'Name':'/{project_name}/chat-id'::Parameter.Value::us-east-1

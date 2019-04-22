@@ -3,8 +3,6 @@ Description: 'cfn-failures-to-telegram'
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
-  DlqName:
-    Type: String
   Role:
     Type: String
   TelegramBotToken:
