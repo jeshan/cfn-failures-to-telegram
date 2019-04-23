@@ -47,7 +47,9 @@ Resources:
               #print('error_message', message)
               region = re.search('cloudformation:(.+?):', stack_id).group(1)
               message += f'\nLink to stack: https://console.aws.amazon.com/cloudformation/home?region={region}#/stacks/{quote_plus(stack_id)}/events'
-              requests.post('https://api.telegram.org/bot${TelegramBotToken}/sendMessage', json={'chat_id': ${TelegramChatId}, 'text': message})
+              print(message)
+              response = requests.post('https://api.telegram.org/bot${TelegramBotToken}/sendMessage', json={'chat_id': ${TelegramChatId}, 'text': message}).json()
+              print(response)
       Handler: index.handler
       Timeout: 30
       MemorySize: 128
