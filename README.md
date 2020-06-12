@@ -21,6 +21,15 @@ aws ssm put-parameter --name /cfn-failures-to-telegram/chat-id --type String --v
 sceptre launch -y app
 ``` 
 
+## Infrastructure
+This is what will get deployed:
+
+![](/diagram-app.png)
+
+![](/diagram-base.png)
+
+![](/diagram-deployment.png)
+
 # Adding private sceptre configuration
 The build process also generates boilerplate configuration with `python generate-config.py`.
 
